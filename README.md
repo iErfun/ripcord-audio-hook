@@ -1,4 +1,4 @@
-# ripcord-audio-hook
+# ripcord-audio-hook 1234567
 Fixes Ripcord:
 1. reading RTP header extensions larger than 8 bytes as voice data, causing garbled audio in voice chats
 2. sending and receiving an old (?) version of the IP discovery packet, causing it to get stuck on "Routing..." when attempting to join voice channels
