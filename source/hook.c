@@ -107,7 +107,7 @@ static u32 LoadHooks() {
     }
 
     MODULEINFO module_info;
-    GetModuleInformation(GetCurrentProcess(), GetModuleHandleA("Ripcord.exe"), &module_info, sizeof module_info);
+    GetModuleInformation(GetCurrentProcess(), GetModuleHandleA("PackCord.exe"), &module_info, sizeof module_info);
     u8* rip_base = (u8*) module_info.lpBaseOfDll;
 
     for (u32 i = 0; i < sizeof SUPPORTED_VERSION; ++i) {
