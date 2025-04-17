@@ -1,0 +1,47 @@
+name: Build Profapi DLL
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up Visual Studio 2019
+      uses: microsoft/setup-msbuild@v1
+      with:
+        vs-version: 2019
+        # You can install required workloads if needed
+        # include-additional-workloads: true
+
+    - name: Install dependencies (if needed)
+      run: |
+        # Install any additional dependencies or libraries here
+        # example: choco install somepackage
+
+    - name: Build Profapi DLL
+      run: |
+        # Setup Visual Studio environment variables
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+
+        # Compile the project
+        if not exist build mkdir build
+        pushd build
+        ml64.exe /c /nologo /Zi /Foprofapi.obj /W3 ../source/proxy.asm
+        cl.exe /D_CRT_SECURE_NO_WARNINGS /utf-8 /TC /std:c17 /nologo /Zi /FC /W4 /GR- /EHsc /I ../source/ ../source/build.c /LD /link User32.lib Shlwapi.lib Psapi.lib -opt:ref /Debug:none profapi.obj /DEF:../source/profapi.def /out:profapi.dll
+        popd
+
+    - name: Upload DLL as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: profapi-dll
+        path: build/profapi.dll
