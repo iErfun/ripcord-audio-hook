@@ -16,13 +16,12 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v4
 
-    - name: Set up MSBuild
-      uses: microsoft/setup-msbuild@v1
+    - name: Set up MSVC Developer Command Prompt
+      uses: ilammy/msvc-dev-cmd@v1
 
     - name: Build Profapi DLL
       shell: cmd
       run: |
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
         if not exist build mkdir build
         pushd build
         ml64.exe /c /nologo /Zi /Foprofapi.obj /W3 ../source/proxy.asm
